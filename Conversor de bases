@@ -1,0 +1,61 @@
+def decimal_para_base(n, base):
+    resultado = ""
+    while n > 0:
+        resto = n % base
+        if 0 <= resto < 10:
+            resultado = str(resto) + resultado
+        else:
+            resultado = chr(ord('A') + resto - 10) + resultado
+        n = n // base
+    return resultado if resultado else "0"
+
+def base_para_decimal(num, base):
+    decimal = 0
+    exp = 0
+    for digito in reversed(str(num)):
+        if digito.isdigit():
+            valor_digito = int(digito)
+        elif 'A' <= digito.upper() <= 'F':
+            valor_digito = ord(digito.upper()) - ord('A') + 10
+        else:
+            print("Número inválido para a base.")
+            return None
+
+        if 0 <= valor_digito < base:
+            decimal += valor_digito * (base ** exp)
+        else:
+            print("Número inválido para a base.")
+            return None
+        exp += 1
+    return decimal
+
+def converter_base(num, base_origem, base_destino):
+    decimal = base_para_decimal(num, base_origem)
+
+    if decimal is not None:
+        if base_destino == 10:
+            resultado_final = str(decimal)
+        else:
+            resultado_final = decimal_para_base(decimal, base_destino)
+
+        return resultado_final
+
+    return "Erro na conversão."
+
+def main():
+    while True:
+        num = input("Digite um número: ")
+        base_origem = int(input("Digite a base original (2, 8, 10, 16, 5): "))
+        base_destino = int(input("Digite a base de destino (2, 8, 10, 16, 5): "))
+
+        resultado = converter_base(num, base_origem, base_destino)
+
+        print(f"Resultado: {resultado}")
+
+        continuar = input("Deseja converter outro número? (S/N): ").lower()
+        if continuar != 's':
+            print('Programa fechado!')
+            break
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,89 @@
+def automato_expr_reg1(palavra):
+    estado_atual = 0
+
+    for char in palavra:
+        if estado_atual == 0 and char == 'a':
+            estado_atual = 0
+        elif estado_atual == 0 and char == 'd':
+            estado_atual = 1
+        elif estado_atual == 1 and char == 'a':
+            estado_atual = 0
+        elif estado_atual == 1 and char == 'd':
+            estado_atual = 1
+        else:
+            return False
+
+    return estado_atual == 1
+
+def automato_expr_reg2(palavra):
+    estado_atual = 0
+    c_cont = 0
+    a_cont = 0
+
+    for char in palavra:
+        if estado_atual == 0 and char == 'b':
+            estado_atual = 1
+        elif estado_atual == 0 and char == 'c':
+            estado_atual = 2
+            c_cont += 1
+        elif estado_atual == 1 and char == 'c':
+            estado_atual = 3
+        elif estado_atual == 2 and (char == 'a' or char == 'c'):
+            estado_atual = 2
+            if char == 'a':
+                a_cont += 1
+            elif char == 'c':
+                c_cont += 1
+        elif estado_atual == 3 and (char == 'a' or char == 'c'):
+            estado_atual = 2
+            if char == 'a':
+                a_cont += 1
+            elif char == 'c':
+                c_cont += 1
+        else:
+            return False
+
+        if c_cont > 2:
+            return False
+
+    return estado_atual == 2 and (a_cont >= 1 or palavra.endswith('c'))
+
+
+
+
+def automato_expr_reg3(palavra):
+    estado_atual = 0
+
+    for char in palavra:
+        if estado_atual == 0 and char == 'c':
+            estado_atual = 0
+        elif estado_atual == 0 and char == 'a':
+            estado_atual = 1
+        elif estado_atual == 1 and char == 'c':
+            estado_atual = 1
+        elif estado_atual == 1 and char == 'a':
+            estado_atual = 1
+        else:
+            return False
+
+    return estado_atual == 1
+def main():
+    while True:
+        palavra = input("Digite uma palavra: ")
+
+        if automato_expr_reg1(palavra):
+            print("A palavra é reconhecida pelo autômato 1.")
+        elif automato_expr_reg2(palavra):
+            print("A palavra é reconhecida pelo autômato 2.")
+        elif automato_expr_reg3(palavra):
+            print("A palavra é reconhecida pelo autômato 3.")
+        else:
+            print("A palavra não é reconhecida por nenhum dos autômatos.")
+
+        continuar = input('Deseja continuar? (S ou N):')
+        if continuar != 's':
+            print('Programa Fechado')
+            break
+
+if __name__ == "__main__":
+    main()
